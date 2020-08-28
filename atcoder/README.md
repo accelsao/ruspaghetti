@@ -1,0 +1,1 @@
+* camel_train `greedy`
