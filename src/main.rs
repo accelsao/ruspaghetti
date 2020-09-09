@@ -1,44 +1,39 @@
 #![allow(unused)]
-use proconio::*;
-use std::collections::BinaryHeap;
 
-const N: usize = 5e5 as usize + 10;
+// //////
+// I/O //
+// //////
+struct Scanner {
+    buffer: Vec<String>,
+}
+impl Scanner {
+    fn new() -> Self {
+        Self { buffer: vec![] }
+    }
+    fn next<F: std::str::FromStr>(&mut self) -> F {
+        loop {
+            if let Some(token) = self.buffer.pop() {
+                return token.parse().ok().expect("parsing fails");
+            }
+            let mut input = String::new();
+            std::io::stdin()
+                .read_line(&mut input)
+                .expect("reading fails");
+            self.buffer = input.split_whitespace().rev().map(String::from).collect();
+        }
+    }
+    fn next_string(&mut self) -> String {
+        assert_eq!(self.buffer.len(), 0);
+        let mut input = String::new();
+        std::io::stdin()
+            .read_line(&mut input)
+            .expect("reading fails");
+        input
+    }
+}
 
 fn main() {
-    input! {t:usize}
-    for i in 0..t {
-        input! {
-        n:usize,
-        mut a:[(usize, i64, i64); n],
-        }
-
-        let mut sum = 0;
-        let mut pos = vec![];
-        let mut neg = vec![];
-        for (k, l, r) in a {
-            sum += if l >= r {
-                pos.push((k, r - l));
-                r
-            } else {
-                if k < n {
-                    neg.push((n - k, l - r))
-                }
-                l
-            }
-        }
-        for mut a in vec![pos, neg] {
-            a.sort();
-            let mut heap = BinaryHeap::new();
-            for (k, d) in a {
-                heap.push(d);
-                if heap.len() > k {
-                    heap.pop();
-                }
-            }
-            for v in heap {
-                sum += -v;
-            }
-        }
-        println!("{}", sum);
-    }
+    let mut scanner = Scanner::new();
+    let mut n: usize = scanner.next();
+    println!("{:?}", n);
 }
