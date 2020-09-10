@@ -1,9 +1,9 @@
 #![allow(unused)]
-use proconio::*;
-use std::cell::RefCell;
-use std::mem::swap;
 
-// Disjoint Set Union
+// /////////////////////
+// Disjoint Set Union //
+// /////////////////////
+
 struct DSU {
     len: usize,
     parent: Vec<usize>,
@@ -60,14 +60,23 @@ impl DSU {
 }
 
 fn main() {
+    use proconio::*;
     input! {
     n: usize,
+        q: usize,
+        a: [(usize,usize,usize);q],
     }
 
     let mut dsu = DSU::new(n);
-    dsu.merge(0, 1);
-    dsu.merge(0, 2);
-    for i in 0..n {
-        println!("parent: {}, rank: {}", dsu.parent[i], dsu.rank[i]);
+    for &(t, u, v) in &a {
+        if t == 0 {
+            dsu.merge(u, v);
+        } else {
+            if dsu.find_parent(u) == dsu.find_parent(v) {
+                println!("{}", 1);
+            } else {
+                println!("{}", 0);
+            }
+        }
     }
 }
